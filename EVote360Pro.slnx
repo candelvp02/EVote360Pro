@@ -1,6 +1,7 @@
 <Solution>
-  <Folder Name="/Core/">
-    <Project Path="Core\EVote360Pro.Core.Domain/EVote360Pro.Core.Domain.csproj" />
-  </Folder>
   <Folder Name="/Source/" />
+  <Folder Name="/Source/Core/">
+    <Project Path="Core\EVote360Pro.Core.Domain/EVote360Pro.Core.Domain.csproj" />
+    <Project Path="EVote360Pro.Core.Application/EVote360Pro.Core.Application.csproj" Id="0efe5bc2-eeb6-4986-bddf-a95c36bc4af8" />
+  </Folder>
 </Solution>
