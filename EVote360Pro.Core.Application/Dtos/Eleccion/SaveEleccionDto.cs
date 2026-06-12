@@ -1,7 +1,7 @@
 ﻿
 namespace EVote360Pro.Core.Application.Dtos.Eleccion
 {
-    internal class SaveEleccionDto
+    public class SaveEleccionDto
     {
         public int Id { get; set; }
         public string Nombre { get; set; } = string.Empty;

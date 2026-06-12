@@ -1,7 +1,7 @@
 ﻿
 namespace EVote360Pro.Core.Application.Dtos.CandidatoPuesto
 {
-    internal class SaveCandidatoPuestoDto
+    public class SaveCandidatoPuestoDto
     {
         public int Id { get; set; }
         public int CandidatoId { get; set; }

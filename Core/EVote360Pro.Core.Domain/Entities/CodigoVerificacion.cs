@@ -4,6 +4,7 @@ namespace EVote360Pro.Core.Domain.Entities
 {
     public class CodigoVerificacion
     {
+        public int Id { get; set; }
         public required int CiudadanoId { get; set; }
         public required int EleccionId { get; set; }
         public required string Codigo { get; set; }
@@ -12,5 +13,6 @@ namespace EVote360Pro.Core.Domain.Entities
         public bool Usado { get; set; }
         public Ciudadano? Ciudadano { get; set; }
         public Eleccion? Eleccion { get; set; }
+        public bool Activo { get; set; }
     }
 }

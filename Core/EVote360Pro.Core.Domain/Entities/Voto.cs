@@ -7,7 +7,7 @@ namespace EVote360Pro.Core.Domain.Entities
         public required int CiudadanoId { get; set; }
         public required int EleccionId { get; set; }
         public required int PuestoElectivoId { get; set; }
-        public int? CandidaatoId { get; set; }
+        public int? CandidatoId { get; set; }
         public bool EsNinguno { get; set; }
         public bool Finalizado { get; set; }
         public Ciudadano? Ciudadano { get; set; }

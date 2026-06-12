@@ -15,7 +15,6 @@ namespace EVote360Pro.Core.Application.ViewModels.PartidoPolitico
         public string Siglas { get; set; } = string.Empty;
 
         public string LogoUrl { get; set; } = string.Empty;
-        public IFormFile? LogoFile { get; set; }
         public bool Activo { get; set; }
     }
 }

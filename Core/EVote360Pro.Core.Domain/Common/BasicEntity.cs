@@ -1,9 +1,8 @@
-﻿
-namespace EVote360Pro.Core.Domain.Common
+﻿namespace EVote360Pro.Core.Domain.Common
 {
     public class BasicEntity<TKey>
     {
-        public required TKey Id { get; set; }
+        public TKey Id { get; set; } = default!;
         public bool Activo { get; set; }
     }
 }

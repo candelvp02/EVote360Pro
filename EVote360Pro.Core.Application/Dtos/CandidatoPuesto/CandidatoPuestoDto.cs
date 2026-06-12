@@ -10,7 +10,7 @@ namespace EVote360Pro.Core.Application.Dtos.CandidatoPuesto
         public int CandidatoId { get; set; }
         public int PuestoElectivoId { get; set; }
         public int PartidoPoliticoId { get; set; }
-        public CandidatoDto? Candiato { get; set; }
+        public CandidatoDto? Candidato { get; set; }
         public PuestoElectivoDto? PuestoElectivo { get; set; }
         public PartidoPoliticoDto? PartidoPolitico { get; set; }
         public bool Activo { get; set; }

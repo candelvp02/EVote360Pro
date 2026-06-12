@@ -13,7 +13,6 @@ namespace EVote360Pro.Core.Application.ViewModels.Candidato
         public string Apellido { get; set; } = string.Empty;
 
         public string FotoUrl { get; set; } = string.Empty;
-        public IFormFile? FotoFile { get; set; }
         public int PartidoPoliticoId { get; set; }
         public bool Activo { get; set; }
     }

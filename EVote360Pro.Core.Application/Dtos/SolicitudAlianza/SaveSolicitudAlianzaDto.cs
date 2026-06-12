@@ -1,7 +1,7 @@
 ﻿
 namespace EVote360Pro.Core.Application.Dtos.SolicitudAlianza
 {
-    internal class SaveSolicitudAlianzaDto
+    public class SaveSolicitudAlianzaDto
     {
         public int Id { get; set; }
         public int PartidoSolicitanteId { get; set; }
