@@ -4,4 +4,7 @@
     <Project Path="Core\EVote360Pro.Core.Domain/EVote360Pro.Core.Domain.csproj" />
     <Project Path="EVote360Pro.Core.Application/EVote360Pro.Core.Application.csproj" Id="0efe5bc2-eeb6-4986-bddf-a95c36bc4af8" />
   </Folder>
+  <Folder Name="/Source/Infrastructure/">
+    <Project Path="EVote360Pro.Infrastructure.Persistence/EVote360Pro.Infrastructure.Persistence.csproj" Id="f4c78dab-c3c2-4e95-9a75-8ec37dbfa087" />
+  </Folder>
 </Solution>

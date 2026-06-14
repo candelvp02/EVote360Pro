@@ -6,7 +6,7 @@ namespace EVote360Pro.Core.Domain.Interfaces
     {
         Task<bool> ExisteNombre(string nombre, int? excludeId = null);
         Task<bool> TieneCandidatosAsignados(int puestoId);
-        Task<bool> ParticipoEnEleccion(int puestoId);
+        Task<bool> ParticipoenEleccion(int puestoId);
         Task<List<PuestoElectivo>> GetAllActivos();
     }
 }

@@ -8,6 +8,6 @@ namespace EVote360Pro.Core.Domain.Interfaces
         Task<bool> ExisteNumeroDocumento(string numeroDocumento, int? excludeId = null);
         Task<bool> ExisteCorreo(string correo, int? excludeId = null);
         Task<bool> YaVotoEnEleccion(int ciudadanoId, int eleccionId);
-        Task<bool> ParticipoEnEleccion(int ciudadanoId);
+        Task<bool> ParticipoenEleccion(int ciudadanoId);
     }
 }

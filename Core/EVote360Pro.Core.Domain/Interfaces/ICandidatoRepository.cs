@@ -6,6 +6,6 @@ namespace EVote360Pro.Core.Domain.Interfaces
     {
         Task<List<Candidato>> GetByPartido(int partidoId);
         Task<bool> TienePuestoAsignado(int candidatoId);
-        Task<bool> ParticipoEnEleccion(int candidatoId);
+        Task<bool> ParticipoenEleccion(int candidatoId);
     }
 }
