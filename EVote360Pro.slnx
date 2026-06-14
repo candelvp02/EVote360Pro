@@ -6,5 +6,6 @@
   </Folder>
   <Folder Name="/Source/Infrastructure/">
     <Project Path="EVote360Pro.Infrastructure.Persistence/EVote360Pro.Infrastructure.Persistence.csproj" Id="f4c78dab-c3c2-4e95-9a75-8ec37dbfa087" />
+    <Project Path="EVote360Pro.Infrastructure.Shared/EVote360Pro.Infrastructure.Shared.csproj" Id="dd248b4c-bd9e-4262-ade1-35bb206f4063" />
   </Folder>
 </Solution>
