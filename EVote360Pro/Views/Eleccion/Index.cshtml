@@ -1,0 +1,73 @@
+﻿@model List<EleccionViewModel>
+@{
+    ViewData["Title"] = "Elecciones";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="bi bi-card-checklist"></i> Elecciones</h2>
+    <a asp-action="Create" class="btn btn-primary">
+        <i class="bi bi-plus-circle"></i> Nueva Elección
+    </a>
+</div>
+
+<div class="card shadow">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead class="table-primary">
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Fecha</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Nombre</td>
+                            <td>@item.FechaRealizacion.ToShortDateString()</td>
+                            <td>
+                                <span class="badge @(item.Estado == EstadoEleccion.Activa ? "bg-success" : item.Estado == EstadoEleccion.Finalizada ? "bg-secondary" : "bg-warning text-dark")">
+                                    @item.NombreEstado
+                                </span>
+                            </td>
+                            <td>
+                                <div class="d-flex gap-1 flex-wrap">
+                                    @if (item.Estado == EstadoEleccion.Pendiente)
+                                    {
+                                        <form asp-action="Activar" method="post" class="d-inline">
+                                            <input type="hidden" name="id" value="@item.Id" />
+                                            <button type="submit" class="btn btn-sm btn-success">
+                                                <i class="bi bi-play-circle"></i> Activar
+                                            </button>
+                                        </form>
+                                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">
+                                            <i class="bi bi-trash"></i>
+                                        </a>
+                                    }
+                                    @if (item.Estado == EstadoEleccion.Activa)
+                                    {
+                                        <form asp-action="Finalizar" method="post" class="d-inline">
+                                            <input type="hidden" name="id" value="@item.Id" />
+                                            <button type="submit" class="btn btn-sm btn-danger">
+                                                <i class="bi bi-stop-circle"></i> Finalizar
+                                            </button>
+                                        </form>
+                                    }
+                                    @if (item.Estado == EstadoEleccion.Finalizada)
+                                    {
+                                        <a asp-action="Resultados" asp-route-id="@item.Id" class="btn btn-sm btn-info">
+                                            <i class="bi bi-graph-up"></i> Resultados
+                                        </a>
+                                    }
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

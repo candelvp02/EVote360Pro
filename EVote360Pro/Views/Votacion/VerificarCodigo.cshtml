@@ -1,0 +1,42 @@
+﻿@model VerificarCodigoViewModel
+@{
+    ViewData["Title"] = "Verificar Código";
+    Layout = "_LayoutAnonymous";
+}
+
+<div class="card shadow">
+    <div class="card-body p-4">
+        <h4 class="card-title text-center mb-2">
+            <i class="bi bi-shield-check"></i> Verificación de Identidad
+        </h4>
+        <p class="text-center text-muted mb-4">
+            Hemos enviado un código de 6 dígitos a su correo electrónico registrado. El código es válido por 10 minutos.
+        </p>
+
+        <form asp-action="VerificarCodigo" method="post">
+            <input type="hidden" asp-for="CiudadanoId" />
+            <input type="hidden" asp-for="EleccionId" />
+
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+            <div class="mb-3">
+                <label asp-for="Codigo" class="form-label">Código de Verificación</label>
+                <input asp-for="Codigo" class="form-control form-control-lg text-center"
+                       placeholder="000000" maxlength="6" style="letter-spacing: 10px; font-size: 2rem;" />
+                <span asp-validation-for="Codigo" class="text-danger small"></span>
+            </div>
+
+            <div class="d-grid mt-4">
+                <button type="submit" class="btn btn-success btn-lg">
+                    <i class="bi bi-check-circle"></i> Verificar Código
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

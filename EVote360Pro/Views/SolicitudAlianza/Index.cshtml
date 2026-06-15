@@ -1,0 +1,190 @@
+﻿@{
+    ViewData["Title"] = "Alianzas Políticas";
+    Layout = "_LayoutDirigent";
+    bool hayEleccionActiva = ViewBag.HayEleccionActiva ?? false;
+    var pendientes = ViewBag.SolicitudesPendientes as List<SolicitudAlianzaViewModel> ?? new();
+    var realizadas = ViewBag.SolicitudesRealizadas as List<SolicitudAlianzaViewModel> ?? new();
+    var alianzas = ViewBag.AlianzasVigentes as List<SolicitudAlianzaViewModel> ?? new();
+    int partidoActualId = ViewBag.PartidoActualId ?? 0;
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="bi bi-handshake"></i> Alianzas Políticas</h2>
+    @if (!hayEleccionActiva)
+    {
+        <a asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-circle"></i> Nueva Solicitud</a>
+    }
+</div>
+
+@if (hayEleccionActiva)
+{
+    <div class="alert alert-warning"><i class="bi bi-lock"></i> Acciones bloqueadas mientras hay una elección activa.</div>
+}
+
+<ul class="nav nav-tabs mb-4" id="alianzasTabs">
+    <li class="nav-item">
+        <a class="nav-link active" data-bs-toggle="tab" href="#pendientes">
+            Solicitudes Recibidas <span class="badge bg-warning text-dark">@pendientes.Count</span>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="tab" href="#realizadas">Solicitudes Enviadas</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="tab" href="#vigentes">
+            Alianzas Vigentes <span class="badge bg-success">@alianzas.Count</span>
+        </a>
+    </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade show active" id="pendientes">
+        <div class="card shadow">
+            <div class="card-body">
+                @if (pendientes.Count == 0)
+                {
+                    <div class="alert alert-info">No hay solicitudes pendientes de responder.</div>
+                }
+                else
+                {
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead class="table-primary">
+                                <tr>
+                                    <th>Partido Solicitante</th>
+                                    <th>Fecha Solicitud</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in pendientes)
+                                {
+                                    <tr>
+                                        <td>@item.NombrePartidoSolicitante</td>
+                                        <td>@item.FechaSolicitud.ToShortDateString()</td>
+                                        <td>
+                                            @if (!hayEleccionActiva)
+                                            {
+                                                <form asp-action="Aceptar" method="post" class="d-inline">
+                                                    <input type="hidden" name="id" value="@item.Id" />
+                                                    <button type="submit" class="btn btn-sm btn-success">
+                                                        <i class="bi bi-check"></i> Aceptar
+                                                    </button>
+                                                </form>
+                                                <form asp-action="Rechazar" method="post" class="d-inline">
+                                                    <input type="hidden" name="id" value="@item.Id" />
+                                                    <button type="submit" class="btn btn-sm btn-danger">
+                                                        <i class="bi bi-x"></i> Rechazar
+                                                    </button>
+                                                </form>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="tab-pane fade" id="realizadas">
+        <div class="card shadow">
+            <div class="card-body">
+                @if (realizadas.Count == 0)
+                {
+                    <div class="alert alert-info">No hay solicitudes enviadas.</div>
+                }
+                else
+                {
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead class="table-primary">
+                                <tr>
+                                    <th>Partido Receptor</th>
+                                    <th>Fecha Solicitud</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in realizadas)
+                                {
+                                    <tr>
+                                        <td>@item.NombrePartidoReceptor</td>
+                                        <td>@item.FechaSolicitud.ToShortDateString()</td>
+                                        <td>
+                                            <span class="badge @(item.Estado == EVote360Pro.Core.Domain.Enums.EstadoSolicitudAlianza.EnEsperaDeRespuesta ? "bg-warning text-dark" : item.Estado == EVote360Pro.Core.Domain.Enums.EstadoSolicitudAlianza.Aceptada ? "bg-success" : "bg-danger")">
+                                                @item.NombreEstado
+                                            </span>
+                                        </td>
+                                        <td>
+                                            @if (!hayEleccionActiva && item.Estado != EVote360Pro.Core.Domain.Enums.EstadoSolicitudAlianza.Aceptada)
+                                            {
+                                                <form asp-action="EliminarSolicitud" method="post" class="d-inline">
+                                                    <input type="hidden" name="id" value="@item.Id" />
+                                                    <button type="submit" class="btn btn-sm btn-danger">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
+                                                </form>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="tab-pane fade" id="vigentes">
+        <div class="card shadow">
+            <div class="card-body">
+                @if (alianzas.Count == 0)
+                {
+                    <div class="alert alert-info">No hay alianzas vigentes.</div>
+                }
+                else
+                {
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead class="table-primary">
+                                <tr>
+                                    <th>Partido Aliado</th>
+                                    <th>Fecha</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in alianzas)
+                                {
+                                    string partidoAliado = item.PartidoSolicitanteId == partidoActualId
+                                        ? item.NombrePartidoReceptor
+                                        : item.NombrePartidoSolicitante;
+                                    <tr>
+                                        <td>@partidoAliado</td>
+                                        <td>@item.FechaRespuesta?.ToShortDateString()</td>
+                                        <td>
+                                            @if (!hayEleccionActiva)
+                                            {
+                                                <form asp-action="EliminarAlianza" method="post" class="d-inline">
+                                                    <input type="hidden" name="id" value="@item.Id" />
+                                                    <button type="submit" class="btn btn-sm btn-danger">
+                                                        <i class="bi bi-trash"></i> Eliminar
+                                                    </button>
+                                                </form>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\EVote360Pro.Core.Application\EVote360Pro.Core.Application.csproj" />
+    <ProjectReference Include="..\EVote360Pro.Infrastructure.Persistence\EVote360Pro.Infrastructure.Persistence.csproj" />
+    <ProjectReference Include="..\EVote360Pro.Infrastructure.Shared\EVote360Pro.Infrastructure.Shared.csproj" />
+  </ItemGroup>
+
+</Project>

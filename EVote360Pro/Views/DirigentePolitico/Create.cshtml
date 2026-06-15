@@ -1,0 +1,45 @@
+﻿@model SaveDirigentePoliticoViewModel
+@{
+    ViewData["Title"] = "Nueva Asignación de Dirigente";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="bi bi-person-badge"></i> Nueva Asignación de Dirigente</h2>
+    <a asp-action="Index" class="btn btn-secondary"><i class="bi bi-arrow-left"></i> Volver</a>
+</div>
+
+<div class="card shadow">
+    <div class="card-body">
+        <form asp-action="Create" method="post">
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label asp-for="UsuarioId" class="form-label">Usuario Dirigente</label>
+                    <select asp-for="UsuarioId" class="form-select"
+                            asp-items="@(new SelectList(ViewBag.Usuarios, "Id", "NombreUsuario"))">
+                        <option value="">-- Seleccione un usuario --</option>
+                    </select>
+                    <span asp-validation-for="UsuarioId" class="text-danger small"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="PartidoPoliticoId" class="form-label">Partido Político</label>
+                    <select asp-for="PartidoPoliticoId" class="form-select"
+                            asp-items="@(new SelectList(ViewBag.Partidos, "Id", "Nombre"))">
+                        <option value="">-- Seleccione un partido --</option>
+                    </select>
+                    <span asp-validation-for="PartidoPoliticoId" class="text-danger small"></span>
+                </div>
+            </div>
+            <div class="mt-4">
+                <button type="submit" class="btn btn-primary"><i class="bi bi-save"></i> Guardar</button>
+                <a asp-action="Index" class="btn btn-secondary ms-2">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

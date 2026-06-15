@@ -1,0 +1,70 @@
+﻿@model ResultadosEleccionViewModel
+@{
+    ViewData["Title"] = "Resultados";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="bi bi-graph-up"></i> Resultados: @Model.NombreEleccion</h2>
+    <a asp-action="Index" class="btn btn-secondary"><i class="bi bi-arrow-left"></i> Volver</a>
+</div>
+
+@foreach (var puesto in Model.ResultadosPorPuesto)
+{
+    <div class="card shadow mb-4">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">
+                <i class="bi bi-briefcase"></i> @puesto.NombrePuesto
+                @if (puesto.HayEmpate)
+                {
+                    <span class="badge bg-warning text-dark ms-2">Empate</span>
+                }
+                else if (!string.IsNullOrEmpty(puesto.GanadorNombre))
+                {
+                    <span class="badge bg-success ms-2">Ganador: @puesto.GanadorNombre</span>
+                }
+            </h5>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Candidato</th>
+                            <th>Partido</th>
+                            <th>Votos</th>
+                            <th>Porcentaje</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var candidato in puesto.ResultadosCandidatos)
+                        {
+                            <tr class="@(candidato.NombreCandidato == puesto.GanadorNombre && !puesto.HayEmpate ? "table-success" : "")">
+                                <td>
+                                    @if (candidato.EsNinguno)
+                                    {
+                                        <span class="text-muted"><i class="bi bi-x-circle"></i> Ninguno</span>
+                                    }
+                                    else
+                                    {
+                                        @candidato.NombreCandidato
+                                    }
+                                </td>
+                                <td>@candidato.NombrePartido</td>
+                                <td><strong>@candidato.TotalVotos</strong></td>
+                                <td>
+                                    <div class="d-flex align-items-center gap-2">
+                                        <div class="progress flex-grow-1" style="height: 20px;">
+                                            <div class="progress-bar bg-primary" style="width: @candidato.Porcentaje%">
+                                                @candidato.Porcentaje%
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+}

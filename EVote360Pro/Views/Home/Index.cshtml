@@ -1,0 +1,78 @@
+﻿@{
+    ViewData["Title"] = "Panel Administrativo";
+    var anos = ViewBag.Anos as List<int> ?? new List<int>();
+    var anoSeleccionado = (int)(ViewBag.AnoSeleccionado ?? 0);
+    var elecciones = ViewBag.Elecciones as List<EVote360Pro.Core.Application.Dtos.Eleccion.EleccionDto> ?? new();
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="bi bi-house"></i> Panel Administrativo</h2>
+</div>
+
+<div class="card shadow mb-4">
+    <div class="card-header bg-primary text-white">
+        <h5 class="mb-0"><i class="bi bi-bar-chart"></i> Resumen Electoral por Año</h5>
+    </div>
+    <div class="card-body">
+        @if (anos.Count > 0)
+        {
+            <form asp-action="ResumenPorAno" method="get" class="row g-3 mb-4">
+                <div class="col-md-4">
+                    <label class="form-label">Seleccione un año</label>
+                    <select name="ano" class="form-select" onchange="this.form.submit()">
+                        @foreach (var ano in anos)
+                        {
+                            <option value="@ano" selected="@(ano == anoSeleccionado)">@ano</option>
+                        }
+                    </select>
+                </div>
+            </form>
+
+            @if (elecciones.Count > 0)
+            {
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead class="table-primary">
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Fecha</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var eleccion in elecciones)
+                            {
+                                <tr>
+                                    <td>@eleccion.Nombre</td>
+                                    <td>@eleccion.FechaRealizacion.ToShortDateString()</td>
+                                    <td>
+                                        <span class="badge @(eleccion.Estado == EVote360Pro.Core.Domain.Enums.EstadoEleccion.Activa ? "bg-success" : eleccion.Estado == EVote360Pro.Core.Domain.Enums.EstadoEleccion.Finalizada ? "bg-secondary" : "bg-warning text-dark")">
+                                            @eleccion.Estado
+                                        </span>
+                                    </td>
+                                    <td>
+                                        @if (eleccion.Estado == EVote360Pro.Core.Domain.Enums.EstadoEleccion.Finalizada)
+                                        {
+                                            <a asp-controller="Eleccion" asp-action="Resultados" asp-route-id="@eleccion.Id" class="btn btn-sm btn-info">
+                                                <i class="bi bi-graph-up"></i> Resultados
+                                            </a>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-info">No hay elecciones registradas para el año @anoSeleccionado.</div>
+            }
+        }
+        else
+        {
+            <div class="alert alert-info">No hay elecciones registradas aún.</div>
+        }
+    </div>
+</div>

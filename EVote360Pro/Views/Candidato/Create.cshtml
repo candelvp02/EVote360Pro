@@ -1,0 +1,55 @@
+﻿@model SaveCandidatoViewModel
+@{
+    ViewData["Title"] = "Nuevo Candidato";
+    Layout = User.IsInRole("DirigentePolitico") ? "_LayoutDirigent" : "_Layout";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="bi bi-person-plus"></i> Nuevo Candidato</h2>
+    <a asp-action="Index" class="btn btn-secondary"><i class="bi bi-arrow-left"></i> Volver</a>
+</div>
+
+<div class="card shadow">
+    <div class="card-body">
+        <form asp-action="Create" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+            <input type="hidden" asp-for="PartidoPoliticoId" />
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label asp-for="Nombre" class="form-label"></label>
+                    <input asp-for="Nombre" class="form-control" />
+                    <span asp-validation-for="Nombre" class="text-danger small"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="Apellido" class="form-label"></label>
+                    <input asp-for="Apellido" class="form-control" />
+                    <span asp-validation-for="Apellido" class="text-danger small"></span>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Foto del Candidato</label>
+                    <input type="file" name="fotoFile" class="form-control" accept="image/*" />
+                </div>
+                @if (ViewBag.Partidos != null)
+                {
+                    <div class="col-md-6">
+                        <label class="form-label">Partido Político</label>
+                        <select asp-for="PartidoPoliticoId" class="form-select"
+                                asp-items="@(new SelectList(ViewBag.Partidos, "Id", "Nombre"))">
+                            <option value="">-- Seleccione un partido --</option>
+                        </select>
+                    </div>
+                }
+            </div>
+            <div class="mt-4">
+                <button type="submit" class="btn btn-primary"><i class="bi bi-save"></i> Guardar</button>
+                <a asp-action="Index" class="btn btn-secondary ms-2">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

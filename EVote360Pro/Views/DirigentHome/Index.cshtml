@@ -1,0 +1,86 @@
+﻿@{
+    ViewData["Title"] = "Panel del Dirigente";
+    Layout = "_LayoutDirigent";
+    var dirigente = ViewBag.Dirigente as EVote360Pro.Core.Application.Dtos.DirigentePolitico.DirigentePoliticoDto;
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="bi bi-house"></i> Panel del Dirigente</h2>
+    @if ((bool)(ViewBag.HayEleccionActiva ?? false))
+    {
+        <span class="badge bg-danger fs-6"><i class="bi bi-lightning"></i> Elección Activa: @ViewBag.NombreEleccionActiva</span>
+    }
+</div>
+
+@if (dirigente?.PartidoPolitico != null)
+{
+    <div class="card shadow mb-4">
+        <div class="card-header bg-success text-white">
+            <h5 class="mb-0"><i class="bi bi-flag"></i> Mi Partido Político</h5>
+        </div>
+        <div class="card-body">
+            <div class="row align-items-center">
+                @if (!string.IsNullOrEmpty(dirigente.PartidoPolitico.LogoUrl))
+                {
+                    <div class="col-md-2 text-center">
+                        <img src="@dirigente.PartidoPolitico.LogoUrl" alt="Logo" class="img-fluid rounded" style="max-height: 100px;" />
+                    </div>
+                }
+                <div class="col-md-10">
+                    <h4>@dirigente.PartidoPolitico.Nombre <span class="badge bg-success">@dirigente.PartidoPolitico.Siglas</span></h4>
+                    @if (!string.IsNullOrEmpty(dirigente.PartidoPolitico.Descripcion))
+                    {
+                        <p class="text-muted">@dirigente.PartidoPolitico.Descripcion</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div class="row g-4 mb-4">
+    <div class="col-md-3">
+        <div class="card text-white bg-primary shadow">
+            <div class="card-body text-center">
+                <i class="bi bi-people fs-1"></i>
+                <h3 class="mt-2">@ViewBag.TotalCandidatos</h3>
+                <p class="mb-0">Total Candidatos</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-success shadow">
+            <div class="card-body text-center">
+                <i class="bi bi-person-check fs-1"></i>
+                <h3 class="mt-2">@ViewBag.TotalCandidatosActivos</h3>
+                <p class="mb-0">Candidatos Activos</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-info shadow">
+            <div class="card-body text-center">
+                <i class="bi bi-person-lines-fill fs-1"></i>
+                <h3 class="mt-2">@ViewBag.TotalAsignaciones</h3>
+                <p class="mb-0">Asignaciones</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-warning shadow">
+            <div class="card-body text-center">
+                <i class="bi bi-handshake fs-1"></i>
+                <h3 class="mt-2">@ViewBag.TotalAlianzas</h3>
+                <p class="mb-0">Alianzas Vigentes</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if ((int)(ViewBag.TotalSolicitudesPendientes ?? 0) > 0)
+{
+    <div class="alert alert-warning">
+        <i class="bi bi-bell"></i> Tiene <strong>@ViewBag.TotalSolicitudesPendientes</strong> solicitud(es) de alianza pendiente(s) de responder.
+        <a asp-controller="SolicitudAlianza" asp-action="Index" class="btn btn-sm btn-warning ms-2">Ver solicitudes</a>
+    </div>
+}

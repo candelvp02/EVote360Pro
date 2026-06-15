@@ -1,0 +1,81 @@
+﻿@model SaveUsuarioViewModel
+@{
+    ViewData["Title"] = "Editar Usuario";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="bi bi-pencil-square"></i> Editar Usuario</h2>
+    <a asp-action="Index" class="btn btn-secondary">
+        <i class="bi bi-arrow-left"></i> Volver
+    </a>
+</div>
+
+<div class="card shadow">
+    <div class="card-body">
+        <form asp-action="Edit" method="post">
+            <input type="hidden" asp-for="Id" />
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label asp-for="Nombre" class="form-label"></label>
+                    <input asp-for="Nombre" class="form-control" />
+                    <span asp-validation-for="Nombre" class="text-danger small"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="Apellido" class="form-label"></label>
+                    <input asp-for="Apellido" class="form-control" />
+                    <span asp-validation-for="Apellido" class="text-danger small"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="CorreoElectronico" class="form-label"></label>
+                    <input asp-for="CorreoElectronico" class="form-control" />
+                    <span asp-validation-for="CorreoElectronico" class="text-danger small"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="NombreUsuario" class="form-label"></label>
+                    <input asp-for="NombreUsuario" class="form-control" />
+                    <span asp-validation-for="NombreUsuario" class="text-danger small"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="Contrasena" class="form-label"></label>
+                    <input asp-for="Contrasena" class="form-control" placeholder="Dejar en blanco para no cambiar" />
+                    <span asp-validation-for="Contrasena" class="text-danger small"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="ConfirmacionContrasena" class="form-label"></label>
+                    <input asp-for="ConfirmacionContrasena" class="form-control" placeholder="Dejar en blanco para no cambiar" />
+                    <span asp-validation-for="ConfirmacionContrasena" class="text-danger small"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="Rol" class="form-label"></label>
+                    <select asp-for="Rol" class="form-select">
+                        <option value="1">Administrador</option>
+                        <option value="2">Dirigente Político</option>
+                    </select>
+                    <span asp-validation-for="Rol" class="text-danger small"></span>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Estado</label>
+                    <div class="form-check form-switch mt-2">
+                        <input asp-for="Activo" class="form-check-input" type="checkbox" />
+                        <label class="form-check-label">Activo</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-save"></i> Guardar
+                </button>
+                <a asp-action="Index" class="btn btn-secondary ms-2">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
