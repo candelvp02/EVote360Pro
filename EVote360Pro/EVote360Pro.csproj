@@ -12,4 +12,9 @@
     <ProjectReference Include="..\EVote360Pro.Infrastructure.Shared\EVote360Pro.Infrastructure.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\img\Candidatos\" />
+    <Folder Include="wwwroot\img\Partidos\" />
+  </ItemGroup>
+
 </Project>

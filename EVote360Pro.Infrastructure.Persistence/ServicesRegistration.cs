@@ -12,7 +12,7 @@ namespace EVote360Pro.Infrastructure.Persistence
         public static void AddPersistenceLayer(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<EVoteContext>(options =>
-                options.UseSqlServer(configuration.GetConnectionString("EVoteConnection"),
+                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
                     b => b.MigrationsAssembly(typeof(EVoteContext).Assembly.FullName)));
 
             #region Repositories
