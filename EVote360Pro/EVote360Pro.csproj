@@ -13,8 +13,19 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="tessdata\" />
     <Folder Include="wwwroot\img\Candidatos\" />
     <Folder Include="wwwroot\img\Partidos\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Tesseract" Version="5.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="tessdata\spa.traineddata">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

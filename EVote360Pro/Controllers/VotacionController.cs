@@ -11,17 +11,20 @@ namespace EVote360Pro.Controllers
         private readonly ICiudadanoService _ciudadanoService;
         private readonly IEleccionService _eleccionService;
         private readonly EmailService _emailService;
+        private readonly IOcrService _ocrService;
 
         public VotacionController(
             IVotacionService votacionService,
             ICiudadanoService ciudadanoService,
             IEleccionService eleccionService,
-            EmailService emailService)
+            EmailService emailService,
+            IOcrService ocrService)
         {
             _votacionService = votacionService;
             _ciudadanoService = ciudadanoService;
             _eleccionService = eleccionService;
             _emailService = emailService;
+            _ocrService = ocrService;
         }
 
         public IActionResult Index()
@@ -34,11 +37,23 @@ namespace EVote360Pro.Controllers
         {
             if (!ModelState.IsValid) return View(vm);
 
-            var (exito, mensaje, ciudadanoId, eleccionId) = await _votacionService.ValidarInicioVotacionAsync(vm.NumeroDocumento);
+            var (exito, mensaje, ciudadanoId, eleccionId) =
+                await _votacionService.ValidarInicioVotacionAsync(vm.NumeroDocumento);
 
             if (!exito)
             {
                 ModelState.AddModelError("validacion", mensaje);
+                return View(vm);
+            }
+
+            string textoExtraido = await _ocrService.ExtraerTextoAsync(vm.ImagenCedula!);
+            bool documentoValido = _ocrService.ValidarDocumento(textoExtraido, vm.NumeroDocumento);
+
+            if (!documentoValido)
+            {
+                ModelState.AddModelError("ocr",
+                    "No se pudo verificar el número de documento en la imagen de la cédula. " +
+                    "Asegúrese de que la imagen sea clara y corresponda a su cédula.");
                 return View(vm);
             }
 
@@ -81,7 +96,8 @@ namespace EVote360Pro.Controllers
 
             if (!valido)
             {
-                ModelState.AddModelError("codigoInvalido", "El código es incorrecto, ha expirado o ya fue utilizado.");
+                ModelState.AddModelError("codigoInvalido",
+                    "El código es incorrecto, ha expirado o ya fue utilizado.");
                 return View(vm);
             }
 
@@ -92,14 +108,24 @@ namespace EVote360Pro.Controllers
         {
             var vm = await _votacionService.GetPuestosParaVotarAsync(ciudadanoId, eleccionId);
             if (vm == null) return RedirectToAction("Index");
-
             return View(vm);
         }
 
         [HttpPost]
         public async Task<IActionResult> ConfirmarVoto(int ciudadanoId, int eleccionId, Dictionary<int, int?> selecciones)
         {
-            if (selecciones == null || selecciones.Count == 0)
+            var puestosActivos = await _votacionService.GetPuestosParaVotarAsync(ciudadanoId, eleccionId);
+
+            if (puestosActivos == null || selecciones == null || selecciones.Count == 0)
+            {
+                TempData["Error"] = "Debe seleccionar una opción para todos los puestos electivos.";
+                return RedirectToAction("Votar", new { ciudadanoId, eleccionId });
+            }
+
+            bool todosSeleccionados = puestosActivos.PuestosElectivos
+                .All(p => selecciones.ContainsKey(p.PuestoElectivoId));
+
+            if (!todosSeleccionados)
             {
                 TempData["Error"] = "Debe seleccionar una opción para todos los puestos electivos.";
                 return RedirectToAction("Votar", new { ciudadanoId, eleccionId });

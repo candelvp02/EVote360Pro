@@ -84,6 +84,14 @@ namespace EVote360Pro.Core.Application.Services
                 var entity = await _candidatoRepository.GetById(id);
                 if (entity == null) return false;
 
+                // verificar que no tenga puesto asignado al momento de inactivar
+                if (entity.Activo)
+                {
+                    bool tienePuesto = await _candidatoRepository.TienePuestoAsignado(id);
+                    if (tienePuesto)
+                        return false;
+                }
+
                 entity.Activo = !entity.Activo;
                 await _candidatoRepository.UpdateAsync(entity.Id, entity);
                 return true;
@@ -168,6 +176,17 @@ namespace EVote360Pro.Core.Application.Services
             }
         }
 
+        public async Task<bool> ParticipoenEleccionAsync(int id)
+        {
+            try
+            {
+                return await _candidatoRepository.ParticipoenEleccion(id);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
         private static CandidatoDto MapToDto(Candidato entity)
         {
             return new CandidatoDto()

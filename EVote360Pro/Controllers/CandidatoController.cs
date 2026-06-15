@@ -144,6 +144,9 @@ namespace EVote360Pro.Controllers
             var entity = await _candidatoService.GetById(id);
             if (entity == null) return RedirectToAction("Index");
 
+            bool participoEnEleccion = await _candidatoService.ParticipoenEleccionAsync(id);
+            ViewBag.CamposCriticosBloqueados = participoEnEleccion;
+
             SaveCandidatoViewModel vm = new()
             {
                 Id = entity.Id,
@@ -231,7 +234,12 @@ namespace EVote360Pro.Controllers
                 return RedirectToAction("Index");
             }
 
-            await _candidatoService.CambiarEstadoAsync(id);
+            bool resultado = await _candidatoService.CambiarEstadoAsync(id);
+            if (!resultado)
+            {
+                TempData["Error"] = "No se puede desactivar el candidato porque tiene un puesto electivo asignado.";
+            }
+
             return RedirectToAction("Index");
         }
 

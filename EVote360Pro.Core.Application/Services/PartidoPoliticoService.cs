@@ -133,6 +133,17 @@ namespace EVote360Pro.Core.Application.Services
             }
         }
 
+        public async Task<bool> ParticipoenEleccionAsync(int id)
+        {
+            try
+            {
+                return await _partidoPoliticoRepository.ParticipoenEleccion(id);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
         private static PartidoPoliticoDto MapToDto(PartidoPolitico entity)
         {
             return new PartidoPoliticoDto()

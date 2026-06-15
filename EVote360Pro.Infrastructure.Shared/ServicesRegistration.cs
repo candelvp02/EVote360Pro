@@ -1,5 +1,7 @@
-﻿using EVote360Pro.Infrastructure.Shared.Services;
+﻿using EVote360Pro.Core.Application.Interfaces;
+using EVote360Pro.Infrastructure.Shared.Services;
 using EVote360Pro.Infrastructure.Shared.Settings;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 

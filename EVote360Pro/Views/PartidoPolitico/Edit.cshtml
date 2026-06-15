@@ -29,18 +29,46 @@
                     <label asp-for="Descripcion" class="form-label"></label>
                     <textarea asp-for="Descripcion" class="form-control" rows="3"></textarea>
                 </div>
-                <div class="col-md-6">
-                    <label class="form-label">Logo del Partido</label>
-                    @if (!string.IsNullOrEmpty(Model.LogoUrl))
-                    {
-                        <div class="mb-2">
-                            <img src="@Model.LogoUrl" alt="Logo actual" class="img-thumbnail" style="max-height: 80px;" />
-                            <small class="text-muted d-block">Logo actual</small>
-                        </div>
-                    }
-                    <input type="file" name="logoFile" class="form-control" accept="image/*" />
-                    <small class="text-muted">Dejar en blanco para mantener el logo actual</small>
-                </div>
+                @if (ViewBag.CamposCriticosBloqueados == true)
+                {
+                    <div class="alert alert-warning">
+                        El nombre, siglas y logo no pueden modificarse porque este partido participó en una elección activa o finalizada.
+                    </div>
+                    <input type="hidden" asp-for="Nombre" />
+                    <input type="hidden" asp-for="Siglas" />
+                    <input type="hidden" asp-for="LogoUrl" />
+                    <div class="mb-3">
+                        <label class="form-label">Nombre</label>
+                        <input type="text" class="form-control" value="@Model.Nombre" disabled />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Siglas</label>
+                        <input type="text" class="form-control" value="@Model.Siglas" disabled />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Logo actual</label><br />
+                        <img src="@Model.LogoUrl" style="height:60px" />
+                        <p class="text-muted small">No se puede cambiar el logo.</p>
+                    </div>
+                }
+                else
+                {
+                    <div class="mb-3">
+                        <label asp-for="Nombre" class="form-label"></label>
+                        <input asp-for="Nombre" class="form-control" />
+                        <span asp-validation-for="Nombre" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Siglas" class="form-label"></label>
+                        <input asp-for="Siglas" class="form-control" />
+                        <span asp-validation-for="Siglas" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Logo</label>
+                        <input type="file" name="logoFile" class="form-control" />
+                        <input type="hidden" asp-for="LogoUrl" />
+                    </div>
+                }
                 <div class="col-md-6">
                     <label class="form-label">Estado</label>
                     <div class="form-check form-switch mt-2">

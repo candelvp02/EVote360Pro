@@ -2,6 +2,7 @@
 using EVote360Pro.Core.Application.Helpers;
 using EVote360Pro.Core.Application.Interfaces;
 using EVote360Pro.Core.Domain.Entities;
+using EVote360Pro.Core.Domain.Enums;
 using EVote360Pro.Core.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -115,6 +116,13 @@ namespace EVote360Pro.Core.Application.Services
                 var entity = await _usuarioRepository.GetById(id);
                 if (entity == null) return false;
 
+                if (entity.Activo && entity.Rol == RolUsuario.Administrador)
+                {
+                    int totalAdminsActivos = await _usuarioRepository.ContarAdministradoresActivos();
+                    if (totalAdminsActivos <= 1)
+                        return false;
+                }
+
                 entity.Activo = !entity.Activo;
                 await _usuarioRepository.UpdateAsync(entity.Id, entity);
                 return true;
@@ -124,7 +132,6 @@ namespace EVote360Pro.Core.Application.Services
                 return false;
             }
         }
-
         public async Task<List<UsuarioDto>> GetAll()
         {
             try

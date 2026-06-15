@@ -2,6 +2,7 @@ using EVote360Pro.Core.Application;
 using EVote360Pro.Core.Application.Interfaces;
 using EVote360Pro.Infrastructure.Persistence;
 using EVote360Pro.Infrastructure.Shared;
+using EVote360Pro.Infrastructure.Shared.Services;
 using EVote360Pro.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,6 +19,12 @@ builder.Services.AddSession(opt =>
 builder.Services.AddPersistenceLayer(builder.Configuration);
 builder.Services.AddApplicationLayer();
 builder.Services.AddSharedLayer(builder.Configuration);
+
+builder.Services.AddTransient<IOcrService>(provider =>
+{
+    string tessDataPath = Path.Combine(builder.Environment.ContentRootPath, "tessdata");
+    return new OcrService(tessDataPath);
+});
 
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped<IUserSession, UserSession>();

@@ -162,7 +162,12 @@ namespace EVote360Pro.Controllers
             if (usuario == null) return RedirectToAction("Index", "Login");
             if (usuario.Rol != RolUsuario.Administrador) return RedirectToAction("AccessDenied", "Login");
 
-            await _usuarioService.CambiarEstadoAsync(id);
+            bool resultado = await _usuarioService.CambiarEstadoAsync(id);
+            if (!resultado)
+            {
+                TempData["Error"] = "No se puede desactivar al único administrador activo del sistema.";
+            }
+
             return RedirectToAction("Index");
         }
     }

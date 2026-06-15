@@ -26,18 +26,46 @@
                     <input asp-for="Apellido" class="form-control" />
                     <span asp-validation-for="Apellido" class="text-danger small"></span>
                 </div>
-                <div class="col-md-6">
-                    <label class="form-label">Foto del Candidato</label>
-                    @if (!string.IsNullOrEmpty(Model.FotoUrl))
-                    {
-                        <div class="mb-2">
-                            <img src="@Model.FotoUrl" alt="Foto actual" class="rounded-circle" style="width:60px;height:60px;object-fit:cover;" />
-                            <small class="text-muted d-block">Foto actual</small>
-                        </div>
-                    }
-                    <input type="file" name="fotoFile" class="form-control" accept="image/*" />
-                    <small class="text-muted">Dejar en blanco para mantener la foto actual</small>
-                </div>
+                @if (ViewBag.CamposCriticosBloqueados == true)
+                {
+                    <div class="alert alert-warning">
+                        El nombre, apellido y foto no pueden modificarse porque este candidato participó en una elección.
+                    </div>
+                    <input type="hidden" asp-for="Nombre" />
+                    <input type="hidden" asp-for="Apellido" />
+                    <input type="hidden" asp-for="FotoUrl" />
+                    <div class="mb-3">
+                        <label class="form-label">Nombre</label>
+                        <input type="text" class="form-control" value="@Model.Nombre" disabled />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Apellido</label>
+                        <input type="text" class="form-control" value="@Model.Apellido" disabled />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Foto actual</label><br />
+                        <img src="@Model.FotoUrl" style="height:80px" />
+                        <p class="text-muted small">No se puede cambiar la foto.</p>
+                    </div>
+                }
+                else
+                {
+                    <div class="mb-3">
+                        <label asp-for="Nombre" class="form-label"></label>
+                        <input asp-for="Nombre" class="form-control" />
+                        <span asp-validation-for="Nombre" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Apellido" class="form-label"></label>
+                        <input asp-for="Apellido" class="form-control" />
+                        <span asp-validation-for="Apellido" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Foto</label>
+                        <input type="file" name="fotoFile" class="form-control" />
+                        <input type="hidden" asp-for="FotoUrl" />
+                    </div>
+                }
                 <div class="col-md-6">
                     <label class="form-label">Estado</label>
                     <div class="form-check form-switch mt-2">

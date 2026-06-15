@@ -11,5 +11,6 @@ namespace EVote360Pro.Core.Application.Interfaces
         Task<List<PartidoPoliticoDto>> GetAllActivos();
         Task<PartidoPoliticoDto?> GetById(int id);
         Task<bool> CambiarEstadoAsync(int id);
+        Task<bool> ParticipoenEleccionAsync(int id);
     }
 }

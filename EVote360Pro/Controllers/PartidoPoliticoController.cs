@@ -107,6 +107,9 @@ namespace EVote360Pro.Controllers
             var entity = await _partidoPoliticoService.GetById(id);
             if (entity == null) return RedirectToAction("Index");
 
+            bool participoEnEleccion = await _partidoPoliticoService.ParticipoenEleccionAsync(id);
+            ViewBag.CamposCriticosBloqueados = participoEnEleccion;
+
             SavePartidoPoliticoViewModel vm = new()
             {
                 Id = entity.Id,

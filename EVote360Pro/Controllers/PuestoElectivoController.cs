@@ -93,6 +93,9 @@ namespace EVote360Pro.Controllers
             var entity = await _puestoElectivoService.GetById(id);
             if (entity == null) return RedirectToAction("Index");
 
+            bool participoEnEleccion = await _puestoElectivoService.ParticipoenEleccionAsync(id);
+            ViewBag.NombreBloqueado = participoEnEleccion;
+
             SavePuestoElectivoViewModel vm = new()
             {
                 Id = entity.Id,

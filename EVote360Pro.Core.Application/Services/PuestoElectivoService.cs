@@ -128,6 +128,17 @@ namespace EVote360Pro.Core.Application.Services
                 return null;
             }
         }
+        public async Task<bool> ParticipoenEleccionAsync(int id)
+        {
+            try
+            {
+                return await _puestoElectivoRepository.ParticipoenEleccion(id);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
 
         private static PuestoElectivoDto MapToDto(PuestoElectivo entity)
         {

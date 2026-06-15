@@ -118,13 +118,19 @@ namespace EVote360Pro.Core.Application.Services
                 var entity = await _eleccionRepository.GetById(id);
                 if (entity == null || entity.Estado != EstadoEleccion.Pendiente) return false;
 
+                // Validar que existan puestos electivos activos
                 var puestosActivos = await _puestoElectivoRepository.GetAllActivos();
                 if (puestosActivos.Count == 0) return false;
 
+                // Validar que cada puesto tenga al menos un candidato asignado
                 foreach (var puesto in puestosActivos)
                 {
-                    var asignaciones = await _candidatoPuestoRepository.GetByPartido(0);
-                    // validacion de configuracion electoral completa se hace en el controller
+                    var asignacionesPuesto = _candidatoPuestoRepository
+                        .GetAllQuery()
+                        .Where(cp => cp.PuestoElectivoId == puesto.Id);
+
+                    bool tieneCandidatos = asignacionesPuesto.Any();
+                    if (!tieneCandidatos) return false;
                 }
 
                 entity.Estado = EstadoEleccion.Activa;
